@@ -4,6 +4,7 @@
  */
 package librarycentre_package;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -168,10 +169,40 @@ public class WestminsterLibraryManager implements LibraryManager {
     @Override
     public void displayItems() {
 
-
         if (!itemList.isEmpty()) {
 
             Collections.sort(itemList);
+
+            try {
+                FileOutputStream fos = new FileOutputStream("File.txt");
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(itemList);
+            }
+            catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            try {
+                FileInputStream fis = new FileInputStream("File.txt");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                ArrayList<Item> list = (ArrayList<Item>) ois.readObject();
+                System.out.println(list);
+            }
+            catch (FileNotFoundException e) {
+                    System.out.println(e.getMessage());
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
 
             for (Item item : itemList) {
                 // print the type of item and the description
@@ -179,8 +210,9 @@ public class WestminsterLibraryManager implements LibraryManager {
                     System.out.print("BOOK - ");
                 else if (item instanceof DVD)
                     System.out.print("DVD - ");
-                //add here teh code if you added teh class Megazine
-
+                //add here the code if you added the class Magazine
+                else if (item instanceof Magazine)
+                    System.out.print("Magazine - ");
                 System.out.println(item.toString());
             }
         } else {

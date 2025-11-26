@@ -4,9 +4,10 @@
  */
 package librarycentre_package;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public abstract class Item implements Comparable<Item> {
+public abstract class Item implements Comparable<Item>, Serializable {
     
     //attributes - instance variables
     private String title;
@@ -52,6 +53,14 @@ public abstract class Item implements Comparable<Item> {
 
     @Override
     public int compareTo(Item o1) {
-        return this.getPublicationYear() - o1.getPublicationYear();
+
+        int yearDifference = this.getPublicationYear() - o1.getPublicationYear();
+
+        if (yearDifference == 0) {
+            return this.getTitle().compareTo(o1.getTitle());
+        }
+        else {
+            return yearDifference;
+        }
     }
 }
